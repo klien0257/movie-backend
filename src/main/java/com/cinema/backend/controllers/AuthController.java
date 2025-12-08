@@ -16,27 +16,33 @@ public class AuthController {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
+    public User register(@RequestBody User user) {
+
+        // Check if email already exists
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new RuntimeException("Email already exists");
         }
 
+        // Encrypt password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 
     @PostMapping("/login")
     public User login(@RequestBody User loginData) {
+
         User existingUser = userRepository.findByEmail(loginData.getEmail());
 
         if (existingUser == null) {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("Invalid email or password");
         }
 
+        // Compare encrypted password
         if (!passwordEncoder.matches(loginData.getPassword(), existingUser.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("Invalid email or password");
         }
 
-        return existingUser; // return user to frontend
+        return existingUser;   // return user info to frontend
     }
 }
