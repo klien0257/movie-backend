@@ -14,7 +14,7 @@ public class TmdbService {
     private final String API_KEY = "YOUR_TMDB_KEY"; // replace this!
 
     public JSONArray fetchPopularMovies() throws Exception {
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY;
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + 948ef5b6effb4bd00cb1a94c138b0986;
 
         try (InputStream is = new URL(url).openStream()) {
             String jsonText = new String(is.readAllBytes(), StandardCharsets.UTF_8);
